@@ -1,5 +1,6 @@
 package com.yuiwai.nodes
 
+import com.yuiwai.yachiyo.core.RGB
 import com.yuiwai.yachiyo.drawing.js.canvas.Drawing
 import org.scalajs.dom
 import org.scalajs.dom.raw.{CanvasRenderingContext2D, HTMLCanvasElement}
@@ -11,21 +12,24 @@ object Nodes extends Drawing[Int] {
     val canvas = init()
     implicit val ctx: CanvasRenderingContext2D =
       canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
-    ctx.fillStyle = "green"
-    ctx.strokeStyle = "red"
-    ctx.lineWidth = 3
+    ctx.lineWidth = 0
+    ctx.font = "20px serif"
     (drawLine(10, 10, 50, 30) ::
       drawLine(10, 10, 50, 80) ::
       drawCircle(10, 10, 10) ::
       drawCircle(30, 10, 10) ::
+      strokeStyle(RGB.Green) ::
+      fillStyle(RGB.Blue) ::
       drawCircle(30, 30, 10) ::
       drawCircle(60, 30, 10) ::
       drawCircle(90, 30, 10) ::
+      fillStyle(RGB.Red) ::
       drawRect(100, 100, 100, 100) ::
+      drawText("test", 150, 250) ::
       Nil)
       .tap(execute)
-    ctx.stroke()
     ctx.fill()
+    // ctx.stroke()
   }
 
   def init(): HTMLCanvasElement = {
