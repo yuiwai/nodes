@@ -1,6 +1,7 @@
 package com.yuiwai.nodes
 
 import com.yuiwai.yachiyo.core.RGB
+import com.yuiwai.yachiyo.drawing.DrawingAction
 import com.yuiwai.yachiyo.drawing.js.canvas.Drawing
 import org.scalajs.dom
 import org.scalajs.dom.raw.{CanvasRenderingContext2D, HTMLCanvasElement}
@@ -10,26 +11,32 @@ import scala.util.chaining._
 object Nodes extends Drawing[Int] {
   def main(args: Array[String]): Unit = {
     val canvas = init()
+
     implicit val ctx: CanvasRenderingContext2D =
       canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
-    ctx.lineWidth = 0
-    ctx.font = "20px serif"
-    (drawLine(10, 10, 50, 30) ::
-      drawLine(10, 10, 50, 80) ::
-      drawCircle(10, 10, 10) ::
-      drawCircle(30, 10, 10) ::
+    (strokeStyle(RGB.Blue) ::
+      fillStyle(RGB.Black) ::
+      strokeLine(10, 10, 50, 30) ::
+      strokeStyle(RGB.Red) ::
+      strokeLine(10, 10, 50, 80) ::
+      fillCircle(10, 10, 10) ::
+      fillStyle(RGB.Black) ::
+      fillCircle(30, 10, 10) ::
       strokeStyle(RGB.Green) ::
+      strokeLine(100, 100, 250, 280) ::
       fillStyle(RGB.Blue) ::
-      drawCircle(30, 30, 10) ::
-      drawCircle(60, 30, 10) ::
-      drawCircle(90, 30, 10) ::
+      fillCircle(30, 30, 10) ::
+      fillCircle(60, 30, 10) ::
+      fillCircle(90, 30, 10) ::
+      fillRect(100, 200, 100, 100) ::
       fillStyle(RGB.Red) ::
-      drawRect(100, 100, 100, 100) ::
-      drawText("test", 150, 250) ::
+      fillRect(100, 100, 100, 100) ::
+      fontStyle(20) ::
+      fillText("test", 150, 250) ::
+      fontStyle(30) ::
+      fillText("test", 150, 350) ::
       Nil)
       .tap(execute)
-    ctx.fill()
-    // ctx.stroke()
   }
 
   def init(): HTMLCanvasElement = {
@@ -43,3 +50,14 @@ object Nodes extends Drawing[Int] {
 
 case class Node[T](x: Int, y: Int, width: Int, height: Int, content: T)
 case class Edge[T](from: Node[T], to: Node[T])
+
+trait Renderer[T] {
+  def renderNode(node: Node[T]): List[DrawingAction[T]] = {
+    // TODO impl
+    Nil
+  }
+  def renderEdge(edge: Edge[T]): List[DrawingAction[T]] = {
+    // TODO impl
+    Nil
+  }
+}
